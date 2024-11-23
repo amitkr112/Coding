@@ -1,0 +1,60 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+
+void heapify(int i,int n,int a[])
+{
+    int l=2*i+1;
+    int r=2*i+2;
+    
+    int largest=i;
+    if(l<n and a[l]>a[i])
+    largest=l;
+    
+    if(r<n and a[r]>a[largest])
+    largest=r;
+    
+    if(largest!=i)
+    {
+        swap(a[largest],a[i]);
+        heapify(largest,n,a);
+    }
+    
+    
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    int a[n];
+    for(int i=0;i<n;i++)
+    cin>>a[i];
+    
+    for(int i=n-1;i>=0;i--)
+    heapify(i,n,a);
+    
+    
+    for(int i=n-1;i>=0;i--)
+    {
+        //cout<<a[0]<<" "<<a[i]<<endl;
+        swap(a[i],a[0]);
+        heapify(0,i,a);
+    }
+    
+    for(int i=0;i<n;i++)
+    cout<<a[i]<<" ";
+    cout<<endl;
+    
+    
+    return 0;
+}

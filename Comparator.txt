@@ -1,0 +1,9 @@
+
+// sorts first by length and then by letters
+bool comp(string a, string b) 
+{
+	if (a.size() != b.size()) return a.size() < b.size();
+	return a < b;
+}
+
+sort(v.begin(),v.end(),comp);

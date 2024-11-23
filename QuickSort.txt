@@ -1,0 +1,61 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+int partition(int l,int r,int a[])
+{
+    int i=l;
+    int pivot=a[r];
+    for(int j=l;j<=r-1;j++)
+    {
+        if(a[j]<pivot)
+        {
+            swap(a[i],a[j]);
+            i++;
+        }
+    }
+    swap(a[i],a[r]);
+    return i;
+}
+
+void quicksort(int l,int r,int a[])
+{
+    if(l>r)
+    return ;
+    
+    int p=partition(l,r,a);
+    
+    //cout<<l<<" "<<r<<endl;
+    //for(int i=0;i<5;i++)
+    //cout<<a[i]<<" ";
+    //cout<<endl;
+    
+    quicksort(l,p-1,a);
+    quicksort(p+1,r,a);
+    
+}
+
+
+int main()
+{
+    int n;
+    cin>>n;
+    int a[n];
+    for(int i=0;i<n;i++)
+    cin>>a[i];
+    
+    quicksort(0,n-1,a);
+    
+    for(int i=0;i<n;i++)
+    cout<<a[i]<<" ";
+    
+    
+    return 0;
+}
