@@ -1,0 +1,217 @@
+/**
+     Failing doesn’t give you a reason to give up,
+     as long as you believe.
+                                  - Seventh Hokage
+                                   (COPIED TEXT FROM BABUMOSHAI)
+**/
+
+#include <bits/stdc++.h>
+#include <algorithm>
+#include <string>
+using namespace std;
+//#include <ext/pb_ds/assoc_container.hpp> 
+//#include <ext/pb_ds/tree_policy.hpp>
+//using namespace __gnu_pbds;
+//template <typename T>
+//using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define vi             vector<ll> 
+#define mi             map<ll,ll>
+#define pi             pair<ll,ll>
+#define si             set<ll>
+#define endl            "\n"
+#define ins             insert 
+#define hell             1000000007
+#define PI              3.1415926535897932384
+#define ll              long long 
+#define f               first
+#define s              second
+#define pb             push_back
+#define pp             pop_back
+#define dash()         cout<<"--------"<<endl
+#define fr(n)          for(ll i=0;i<n;i++)
+#define FAST           ios_base::sync_with_stdio(false); cin.tie(NULL);
+#define narak             998244353 
+#define decimal(n)  std::cout << std::fixed;std::cout << std::setprecision(n);
+#define make make_pair
+#define mem0(a)         memset(a,0,sizeof(a))
+#define mem1(a)         memset(a,-1,sizeof(a))
+#define ALL(v) v.begin(), v.end()
+#define SORT(v) sort(ALL(v))  
+#define REVERSE(v) reverse(ALL(v))
+#define maxc(v) max_element(all(v))
+#define minc(v) min_element(all(v))
+#define GCD(m,n) __gcd(m,n)
+#define LCM(m,n) m*(n/GCD(m,n))
+#define sz(a) (ll)a.size()
+#define loop(i,a,b) for(ll i=a;i<=b;i++)
+
+// for debugging
+
+#define see(x)         cout<<#x<<" = "<<x<<endl
+#define see2(x,y)      cout<<#x<<" = "<<x<<"::"<<#y<<" = "<<y<<endl
+
+
+//std::ifstream in("input.txt");
+//std::ofstream out("output.txt");
+/*
+
+INT_MIN Minimum value for a variable of type int. -2147483647 
+INT_MAX Maximum value for a variable of type int.  2147483647
+LLONG_MIN Minimum value for a variable of type long long. -9,223,372,036,854,775,807 
+LLONG_MAX Maximum value for a variable of type long long.  9,223,372,036,854,775,807
+
+
+bool comp(ll a,ll b) 
+{ return (a < b); } 
+
+bool sortbysec(const pair<ll,ll> &a, const pair<ll,ll> &b) 
+{
+  return (a.second < b.second); 
+} 
+
+ll spf[1000005];
+void build()
+{
+    for(ll i=2;i<1000005;i++)
+    {
+        if(!spf[i])
+        {
+            for(ll j=1;j*i<1000005;j++)
+            {
+            if(!spf[i*j])
+              spf[i*j]=i;  
+            }
+        }
+    }   
+}
+
+getline(cin, str);  // to get a line as input
+getline(cin, str);
+
+vi fac(200005);
+void build()
+{
+    fac[0]=1;
+    fac[1]=1;
+    for(ll i=2;i<=200000;i++)
+    {
+        fac[i]=fac[i-1]*i;
+        fac[i]%=hell;
+        
+    }
+}
+
+ll power(ll x,ll y,ll p)
+{
+    ll res = 1; // Initialize result
+    x = x % p; // Update x if it is more than or equal to p
+    while (y > 0) 
+    {
+        // If y is odd, multiply x with result
+        if (y & 1)
+            res = (res * x) % p;
+        // y must be even now
+        y = y >> 1; // y = y/2
+        x = (x * x) % p;
+    }
+    return res;
+}
+ll modInverse(ll n,ll p)
+{
+    return power(n, p - 2, p);
+}
+ll ncr(ll n,ll k,ll mod) 
+{
+    ll nom = fac[n];
+    ll den = (fac[n-k] * fac[k]) % mod;
+    return (nom * power(den, mod - 2,mod)) % mod;
+}
+
+*/
+
+const ll N=+1e+5+5;
+ll n;
+ll m;
+vector<pair<ll,ll>>g[N];
+ll vis[N];
+ll parent[N];
+ll size[N];
+
+
+void solve()
+{
+    
+    cin>>n>>m;
+    for(ll i=0;i<m;i++)
+    {
+        ll u,v,w;
+        cin>>u>>v>>w;
+        g[u].pb(make(v,w));
+        g[v].pb(make(u,w));
+    }
+    
+    
+   
+    
+    
+    
+    vector<pair<ll,ll>>ans;
+    ll wt=0;
+    priority_queue<tuple<ll,ll,ll>,vector<tuple<ll,ll,ll>>,greater<tuple<ll,ll,ll>>>q;
+    q.push(make_tuple(0ll,0ll,1ll));
+    
+    while(!q.empty())
+    {
+        ll node=get<2>(q.top());
+        //cout<<node<<endl;
+        ll node2=get<1>(q.top());
+        ll w=get<0>(q.top());
+        
+        q.pop();
+          
+        if(vis[node])
+        continue;
+        
+        ans.pb(make(node,node2));
+        vis[node]=1;
+        vis[node2]=1;
+        
+        wt+=w; 
+        for(pair<ll,ll>p:g[node])
+        {
+            if(!vis[p.f])
+            q.push(make_tuple(p.s,node,p.f));    
+        }
+        if(ans.size()==n)
+        break;
+        
+    }
+    
+    
+    
+    
+    
+    
+    cout<<wt<<endl;
+    for(pair<ll,ll> x:ans)
+    {
+        cout<<x.f<<" "<<x.s<<endl;
+        // node1  node2  weight
+        //cout<<get<0>(t)<<" "<<get<1>(t)<<" "<<get<2>(t)<<endl;
+    }
+    
+    return ;
+}
+
+int main() 
+{ 
+   //decimal(15);
+   FAST;
+   //build();
+   ll t;
+   t=1;
+   //cin>>t;  
+   while(t--)
+   solve();
+   return 0;
+}
