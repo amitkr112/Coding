@@ -1,0 +1,170 @@
+#include <bits/stdc++.h>
+using namespace std;
+//#include <ext/pb_ds/assoc_container.hpp>
+//#include <ext/pb_ds/tree_policy.hpp>
+//using namespace __gnu_pbds;
+/---------------------DEBUGGING--------------------------------------------/
+void __print(int x) {cerr << x;}
+void __print(long x) {cerr << x;}
+void __print(long long x) {cerr << x;}
+void __print(unsigned x) {cerr << x;}
+void __print(unsigned long x) {cerr << x;}
+void __print(unsigned long long x) {cerr << x;}
+void __print(float x) {cerr << x;}
+void __print(double x) {cerr << x;}
+void __print(long double x) {cerr << x;}
+void __print(char x) {cerr << '\'' << x << '\'';}
+void __print(const char *x) {cerr << '\"' << x << '\"';}
+void __print(const string &x) {cerr << '\"' << x << '\"';}
+void __print(bool x) {cerr << (x ? "true" : "false");}
+
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
+void _print() {cerr << "]\n";}
+template <typename T, typename... V>
+void print(T t, V... v) {_print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+#ifndef ONLINE_JUDGE
+#define debug(x...) cerr << "[" << #x << "] = ["; _print(x)
+#else
+#define debug(x...)
+#endif
+/-------------------------------------------------------------------------------------/
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pcc pair<char,char>
+#define F first
+#define S second
+#define int long long
+#define pi 3.141592653589793238462643383279502
+#define M  998244353 //1000000007
+#define rep(i,a,n) for(int i=a;i<n;i++)
+#define INF 10000000000005
+#define N 200005
+#define vi vector<int>
+#define all(v) v.begin(),v.end()
+#define endl "\n"
+struct SegTree
+{
+
+    int tree[4*N];
+    int lazy[4*N];
+    bool clazy[4*N];
+    void push(int node,int l,int r)
+    {   if(clazy[node])
+        {   int mid=(l+r)>>1;
+            clazy[node]=false;
+            clazy[2*node+1]=clazy[2*node+2]=true;
+            lazy[2*node+1]=lazy[2*node+2]=lazy[node];
+            tree[2*node+1]=(mid-l+1)*lazy[node];
+            tree[2*node+2]=(r-mid)*lazy[node];
+            lazy[node]=0;
+        }
+    }
+    void build(vector<int>&a,int node,int start,int end)
+    {   clazy[node]=false,lazy[node]=0;
+        if(start == end)
+        {
+            tree[node]=a[start];
+            return;
+        }
+        int mid=(start + end)>>1;
+        build(a,2*node+1,start,mid);
+        build(a,2*node+2,mid+1,end);
+        tree[node]=(tree[2*node+1]+tree[2*node+2]);
+    }
+    void rupd(int node,int start,int end,int l,int r,int val)
+    {   if(r<start || l>end)return;
+        if(l<=start && end<=r)
+        {
+            tree[node]=(end-start+1)*val;
+            lazy[node]=val;
+            clazy[node]=true;
+            return;
+        }
+        push(node,start,end);
+        int mid=(start + end)>>1;
+        rupd(2*node+1,start,mid,l,r,val);
+        rupd(2*node+2,mid+1,end,l,r,val);
+        tree[node]=(tree[2*node+1]+tree[2*node+2]);
+
+    }
+    int rquery(int node,int start,int end,int l,int r)
+    {
+        if(r<start || l>end)return 0;
+        if(l<=start && end<=r)
+            return tree[node];
+        push(node,start,end);
+        int mid=(start+end)>>1;
+        int p1=rquery(2*node+1,start,mid,l,r);
+        int p2=rquery(2*node+2,mid+1,end,l,r);
+        return (p1+p2);
+    }
+}st;
+void solve()
+{
+   int n,q;
+   cin>>n>>q;
+   string s,t;
+   cin>>s>>t;
+   vi a;
+   for(char x:t)
+   {
+       a.pb((int)(x-'0'));
+   }
+   st.build(a,0,0,n-1);
+   vector<pii>segs;
+   while(q--)
+   {
+       int l,r;
+       cin>>l>>r;
+       --l,--r;
+       segs.pb({l,r});
+   }
+   reverse(all(segs));
+   bool f=true;
+   for(auto x:segs)
+   {   int l=x.F,r=x.S;
+       int cnt_of_ones = st.rquery(0,0,n-1,l,r);
+       int len = (r - l + 1);
+       if(2*(cnt_of_ones)<(len))
+        st.rupd(0,0,n-1,l,r,0);
+       else if(2*(len - cnt_of_ones)<(len))
+        st.rupd(0,0,n-1,l,r,1);
+       else
+            {f=false;break;}
+   }
+   if(!f)
+   {
+       cout<<"NO"<<endl;
+       return;
+   }
+   string ans="";
+   for(int i=0;i<n;i++)
+   {
+       int cnt = st.rquery(0,0,n-1,i,i);
+       if(cnt)ans+='1';
+       else ans+='0';
+   }
+   if(ans == s)
+   {
+       cout<<"YES"<<endl;
+   }
+   else
+   {
+       cout<<"NO"<<endl;
+   }
+}
+signed main()
+{
+   ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+   int tests;
+   cin>>tests;
+   // tests=1;
+   for(int i=0;i<tests;i++)
+   {
+       solve();
+   }
+}

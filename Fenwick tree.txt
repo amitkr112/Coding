@@ -1,0 +1,67 @@
+
+
+ll getSum(ll BITree[], ll index)
+{
+    ll sum = 0; // Initialize result
+
+    // Traverse ancestors of BITree[index]
+    while (index > 0)
+    {
+        // Add current element of BITree to sum
+        sum += BITree[index];
+
+        // Move index to parent node in getSum View
+        index -= index & (-index);
+    }
+    return sum;
+}
+
+void updateBIT(ll BITree[], ll n, ll index, ll val)
+{
+    // Traverse all ancestors and add 'val'
+    while (index <= n)
+    {
+    // Add 'val' to current node of BI Tree
+    BITree[index] += val;
+
+    // Update index to that of parent in update View
+    index += index & (-index);
+    }
+}
+
+void solve(ll nn)
+{
+    ll n,m;
+    cin>>n>>m;
+    ll a[n+1];
+    ll l[n+1];
+    ll r[n+1];
+    ll BITree[n+m+5];
+    mem0(BITree);
+    
+    for(ll i=1;i<=n;i++)
+    {
+        ll x=i;
+        a[x]=m+i;
+        l[x]=i;
+        r[x]=i;
+        updateBIT(BITree,n+m+4,m+i,1);
+    }
+    for(ll i=0;i<m;i++)
+    {
+        ll x;
+        cin>>x;
+        l[x]=1;
+        r[x]=max(r[x],getSum(BITree,a[x]));
+        updateBIT(BITree,n+m+4,a[x],-1);
+        a[x]=m-i;
+        updateBIT(BITree,n+m+4,a[x],1);
+    }
+    
+    for(ll i=1;i<=n;i++)
+    {
+        r[i]=max(r[i],getSum(BITree,a[i]));
+        cout<<l[i]<<" "<<r[i]<<endl;
+    }
+
+}

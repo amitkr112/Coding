@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+const int MAXN = 100005;
+
+inline int rd(){
+    int x=0,f=1;char ch=getchar();
+    while(ch<'0' || ch>'9') {if(ch=='-') f=-1;ch=getchar();}
+    while(ch>='0' && ch<='9') {x=(x<<1)+(x<<3)+ch-'0';ch=getchar();}
+    return x*f;
+}
+
+struct Node{
+    int sum,rx,lx,mx;
+}node[MAXN*2];
+
+int n,m,a[MAXN];
+
+inline void pushup(int x){
+    node[x].sum=node[x<<1].sum+node[x<<1|1].sum;
+    node[x].lx=max(node[x<<1].lx,node[x<<1].sum+node[x<<1|1].lx);
+    node[x].rx=max(node[x<<1|1].rx,node[x<<1|1].sum+node[x<<1].rx);
+    node[x].mx=max(node[x<<1].rx+node[x<<1|1].lx,
+    max(node[x<<1].mx,node[x<<1|1].mx));
+}
+
+inline void build(int x,int l,int r){
+    if(l==r){
+        node[x].rx=node[x].lx=node[x].mx=a[l];
+        node[x].sum=a[l];
+        return;
+    }
+    int mid=(l+r)>>1;
+    build(x<<1,l,mid);
+    build(x<<1|1,mid+1,r);
+    pushup(x);
+}
+
+inline Node query(int x,int L,int R,int l,int r){
+    if(l<=L && R<=r) return node[x];
+    int mid=(L+R)>>1;
+    if(mid<l)  return query(x<<1|1,mid+1,R,l,r);
+    if(mid>=r) return query(x<<1,L,mid,l,r);
+    else{
+        Node ans,a,b;
+        a=query(x<<1,L,mid,l,r);b=query(x<<1|1,mid+1,R,l,r);
+        ans.sum=a.sum+b.sum;
+        ans.mx=max(a.mx,a.rx+b.lx),ans.mx=max(ans.mx,b.mx);
+        ans.lx=max(a.lx,a.sum+b.lx);
+        ans.rx=max(b.rx,b.sum+a.rx);
+        return ans;
+    }
+}
+
+int main(){
+    n=rd();
+    for(register int i=1;i<=n;i++) a[i]=rd();
+    build(1,1,n);
+    m=rd();
+    while(m--){
+        int l,r;
+        l=rd();r=rd();
+        printf("%d\n",query(1,1,n,l,r).mx);
+    }
+    return 0;
+}

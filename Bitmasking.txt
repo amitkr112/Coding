@@ -1,0 +1,112 @@
+/**
+     Failing doesn’t give you a reason to give up,
+     as long as you believe.
+                                  - Seventh Hokage
+                                   (COPIED TEXT FROM BABUMOSHAI)
+**/
+
+#include <bits/stdc++.h>
+#include <algorithm>
+#include <string>
+using namespace std;
+//#include <ext/pb_ds/assoc_container.hpp> 
+//#include <ext/pb_ds/tree_policy.hpp>
+//using namespace __gnu_pbds;
+//template <typename T>
+//using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define vi             vector<ll> 
+#define mi             map<ll,ll>
+#define pi             pair<ll,ll>
+#define si             set<ll>
+#define endl            "\n"
+#define ins             insert 
+#define hell             1000000007
+#define PI              3.1415926535897932384
+#define ll              long long 
+#define f               first
+#define s              second
+#define pb             push_back
+#define pp             pop_back
+#define dash()         cout<<"--------"<<endl
+#define fr(n)          for(ll i=0;i<n;i++)
+#define FAST           ios_base::sync_with_stdio(false); cin.tie(NULL);
+#define narak             998244353 
+#define decimal(n)  std::cout << std::fixed;std::cout << std::setprecision(n);
+#define make make_pair
+#define mem0(a)         memset(a,0,sizeof(a))
+#define mem1(a)         memset(a,-1,sizeof(a))
+#define ALL(v) v.begin(), v.end()
+#define SORT(v) sort(ALL(v))  
+#define REVSORT sort(v.rbegin(),v.rend())
+#define REVERSE(v) reverse(ALL(v))
+#define maxc(v) max_element(all(v))
+#define minc(v) min_element(all(v))
+#define GCD(m,n) __gcd(m,n)
+#define LCM(m,n) m*(n/GCD(m,n))
+#define sz(a) (ll)a.size()
+#define loop(i,a,b) for(ll i=a;i<=b;i++)
+
+// for debugging
+
+#define see(x)         cout<<#x<<" = "<<x<<endl
+#define see2(x,y)      cout<<#x<<" = "<<x<<"::"<<#y<<" = "<<y<<endl
+
+
+//std::ifstream in("input.txt");
+//std::ofstream out("output.txt");
+/*
+
+INT_MIN Minimum value for a variable of type int. -2147483647 
+INT_MAX Maximum value for a variable of type int.  2147483647
+LLONG_MIN Minimum value for a variable of type long long. -9,223,372,036,854,775,807 
+LLONG_MAX Maximum value for a variable of type long long.  9,223,372,036,854,775,807
+
+//auto r = equal_range(v.begin(), v.end(), x);
+// r.second - v.begin( )    index of higher element
+// r.first-v.begin()        index of lower element
+// r.second - r.first       number of elements of x 
+
+*/
+
+
+vector<vector<ll>>ans;
+ll n;
+ll a[15];
+
+void solve()
+{
+    cin>>n;
+    for(ll i=1;i<=n;i++)
+    cin>>a[i];
+    for (int b = 0; b < (1<<n); b++) 
+    {
+        vector<ll> subset;
+        for (int i = 0; i < n; i++) 
+        {
+            if (b&(1<<i)) 
+            subset.push_back(a[i+1]);
+        }
+        ans.pb(subset);
+    }
+    
+    for(vector<ll>v:ans)
+    {
+        for(ll x:v)
+        cout<<x<<" ";
+        cout<<endl;
+    }
+
+    return ;
+}
+int main() 
+{ 
+   //decimal(15);
+   FAST;
+   //build();
+   ll t;
+   t=1;
+   //cin>>t;  
+   while(t--)
+   solve();
+   return 0;
+}

@@ -1,0 +1,30 @@
+// No of cycles in a graph
+const ll N= 100005;
+vector<ll>graph[N];
+int color[N];
+int vis[N]; 
+int cyclenumber = 0;
+ 
+ 
+void dfs_cycle(int u,int color[])
+{
+ 
+    if (color[u] == 2) {
+        return;
+    }
+ 
+    if (color[u] == 1) 
+    {
+        cyclenumber++;
+        return;
+    }
+    color[u] = 1;
+    for (int v : graph[u]) 
+    {
+        if (vis[v]) 
+            continue;
+        dfs_cycle(v, color);
+    }
+    color[u] = 2;
+    return ;
+}
