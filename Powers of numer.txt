@@ -1,0 +1,35 @@
+map<ll,ll>allpowofno(ll n)
+{
+    map<ll,ll>mp;
+    for(ll i=2;i*i<=n;i++)
+    {
+        if(n%i==0)
+        {
+            mp[i]++;
+            n/=i;
+            i--;
+        }
+    }
+    if(n!=1)
+    mp[n]++;
+    return mp;}
+ll primepow(ll n,ll k)
+{
+    ll res=0;
+    while(n)
+    {
+      n/=k;
+      res+=n;
+    }
+    return res;}
+ll allpowofnocomp(ll n,ll k)
+{
+    mi mp=allpowofno(k);
+    ll ans;
+    for(auto it=mp.begin();it!=mp.end();++it)
+    {
+        cout<<it->f<<" "<<it->s<<endl;
+        ll z=primepow(n,it->f);
+        ans=min(ans,z/(it->s));
+    }
+    return ans;    }
