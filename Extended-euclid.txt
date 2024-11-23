@@ -1,0 +1,34 @@
+
+ll gcdExtended(ll a,ll b,ll *x,ll *y)
+{
+    if(a==0)
+    {
+        // 0*x+ b*y=b  => y=1; and x=0;
+        *x=0;
+        *y=1;
+        return b;
+        
+    }
+    // Update x and y using results of
+    // recursive call
+    // a*x+b*y=gcd(a,b);
+    // Replace a with b%a
+    // (b%a)*x1+a*y1=gcd(b%a,a);
+    //  ( b- (b/a)*a )x1 + a*y1 =gcd(b%a,a)
+    //  a*(y1-(b/a)*x1)+b*y1=gcd(b%a,a)
+    // since gcd(a,b)=gcd(b%a,a)
+    // comparing coefficient
+    // x= y1- (b/a)*x1
+    // y=x1
+    
+    ll y1,x1;
+    ll gcd=gcdExtended(b%a,a,&x1,&y1);
+    
+    *x=y1-(b/a)*x1;
+    *y=x1;
+    
+    return gcd;
+}
+
+
+

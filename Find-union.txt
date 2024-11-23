@@ -1,0 +1,26 @@
+
+const ll N=1005;
+ll p[N];
+ll rk[N];
+
+int getp(int v) {
+	if (v == p[v]) return v;
+	return p[v] = getp(p[v]);
+}
+
+
+
+void merge(int u, int v) {
+	u = getp(u);
+	v = getp(v);
+	
+	if (rk[u] < rk[v]) swap(u, v);
+	
+if(u!=v)
+{
+	rk[u] += rk[v];
+	
+	p[v] = u;
+}
+}
+

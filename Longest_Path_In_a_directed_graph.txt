@@ -1,0 +1,20 @@
+ll dp[N];
+ll vis[N];
+
+void fun(ll node)
+{
+    dp[node]++;
+    vis[node]=1;
+    ll sm=0;
+    for(auto it:g[node])
+    {
+        if(!vis[it])
+        {
+            fun(it);
+            //cout<<node<<" "<<it<<" "<<dp[it]<<" "<<dp[node]<<endl;
+        }
+        sm=max(sm,dp[it]);
+    }
+    dp[node]+=sm;
+    //cout<<node<<" "<<dp[node]<<endl;
+}

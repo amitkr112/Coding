@@ -1,0 +1,66 @@
+vector<ll> find_diameter()
+{
+    queue<ll>q;
+    vector<ll>path;
+    q.push(1);
+    ll prev=1;
+    vis[1]=1;
+    while(!q.empty())
+    {
+        prev=q.front();
+        q.pop();
+        
+        for(ll x:g[prev])
+        {
+            if(!vis[x])
+            {
+                vis[x]=1;
+                q.push(x);
+            }
+        }
+    }
+//    cout<<prev<<endl;
+    
+    ll bb[n+1];
+    bb[prev]=-1;
+    queue<ll>q2;
+    
+    for(ll i=1;i<=n;i++)
+    vis[i]=0;
+    
+    q2.push(prev);
+    vis[prev]=1;
+    ll last=prev;
+    while(!q2.empty())
+    {
+        last=q2.front();
+        q2.pop();
+        
+        for(ll x:g[last])
+        {
+            if(!vis[x])
+            {
+                vis[x]=1;
+                bb[x]=last;
+                q2.push(x);
+            }
+        }
+    }
+    
+   // cout<<last<<endl;
+    
+    ll cnt=0;
+    while(last!=-1)
+    {
+  //      cout<<last<<" ";
+        path.pb(last);
+        last=bb[last];
+    }
+  //  cout<<endl;
+    
+//    for(ll i=1;i<=n;i++)
+  //  cout<<i<<" "<<bb[i]<<endl;
+    
+    return path;
+}
+

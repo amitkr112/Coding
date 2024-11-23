@@ -1,0 +1,28 @@
+// GIves the length of longest suffix which matches the prefix
+    vector<int> lps(string s) 
+    {
+        int n = s.size();
+        vector<int> z(n);
+        int x = 0, y = 0;
+        for (int i = 1; i < n; i++) 
+        {
+            int j=z[i-1];
+            while(j and s[j]!=s[i])
+                j=z[j-1];
+            if(s[j]==s[i])
+                z[i]=j+1;
+        }
+        return z;
+    }
+    
+    
+    string shortestPalindrome(string s) 
+    {
+        string ss=s;
+        string rev=s;
+        reverse(rev.begin(),rev.end());
+        string str=s+"."+rev;
+        vector<int>ans=lps(str);
+        return (rev.substr(0,(int)s.size()-ans[((int)str.size()-1)])+s); 
+        
+    }

@@ -1,0 +1,51 @@
+class Solution {
+public:
+    long long int d=256;
+    long long int q=+1e+7;
+    int strStr(string txt, string pat) {
+        int n=txt.size();
+        int m=pat.size();
+        long long int h=1;
+        if(m>n)
+            return -1;
+        if(m==n and pat==txt)
+            return 0;
+        for(int i=1;i<=m-1;i++)
+        {
+            h=(h*d);
+            h%=q;
+        }
+        long long int p=0,t=0;
+        for(int i=0;i<m;i++)
+        {
+            p=(p*d+pat[i])%q;
+            t=(t*d+txt[i])%q;
+        }
+        
+        for(int i=0;i<=n-m;i++)
+        {
+            
+            if(p==t)
+            {
+                int j=i;
+                
+                for(;j<i+m;j++)
+                {
+                    if(pat[j-i]!=txt[j])
+                        break;
+                }
+                
+                if(j==i+m)
+                return i;
+            }
+            if(i<(n-m))
+            {
+                t=(d*(t-txt[i]*h)+txt[i+m])%q;
+                if(t<0)
+                    t+=q;
+            }
+        }
+        return -1;
+        
+    }
+};

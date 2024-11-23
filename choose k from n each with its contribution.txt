@@ -1,0 +1,19 @@
+ll dp[n+1];
+            mem0(dp);
+            dp[0]=1;
+            
+            for(ll kk=0;kk<g[i].size();kk++)
+            {
+                ll xx=g[i][kk];
+                if(child[xx][j-1]==0)
+                continue;
+                
+                for(ll l=k;l>0;l--)
+                {
+                    dp[l]+=dp[l-1]*child[xx][j-1];
+                    dp[l]%=hell;
+                }
+            }
+            ans+=dp[k];
+            ans%=hell;
+            
